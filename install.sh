@@ -2,11 +2,12 @@
 mkdir mc
 mkdir frp
 
-# Check whether wget is available
+# Check wget
+echo "[INFO]check wget..."
 wget --version > /dev/null
 # If wget is not available, install wget
 if [ $? -ne 0 ]; then
-    echo "[INFO]wget is not installed!"
+    echo "[ERROR]wget is not installed!"
     echo "[INFO]installing wget..."
     apt update
     apt install wget
@@ -14,16 +15,15 @@ if [ $? -ne 0 ]; then
 fi
 echo "[INFO]wget is installed!"
 
+# Install frp
+echo "[INFO]installing frp..."
 # Choose frp server
 echo "[INFO]choose frp server:"
 echo "0. None"
 echo "1. Sakura Frp"
 read -p "input number: " frpServer
-
 if [ $frpServer -eq 0 ]; then
     echo "[INFO]no frp server"
-
-# Install Sakura frp
 elif [ $frpServer -eq 1 ]; then
     cd frp
     echo "[INFO]installing sakura frp..."
@@ -31,44 +31,23 @@ elif [ $frpServer -eq 1 ]; then
     chmod +x frpc_linux_amd64
     cd ..
 fi
+echo "[INFO]install frp success!"
 
-# Agree eula
+# Agree Minecraft eula
+rm -rf mc/eula.txt
 echo "[INFO]do you agree minecraft eula?(y/n)"
-echo "[INFO]eula link: https://account.mojang.com/documents/minecraft_eula"
+echo "[INFO]https://account.mojang.com/documents/minecraft_eula"
 read -p "input: " agreeMinecraftServerEula
 if [ $agreeMinecraftServerEula = "y" ]; then
     echo "eula=true" >> mc/eula.txt
 elif [ $agreeMinecraftServerEula = "n" ]; then
     echo "eula=false" >> mc/eula.txt
 fi
-
-# Choose Minecraft server
-echo "[INFO]choose minecraft server"
-echo "1.Vanilla"
-echo "2.Spigot"
-echo "3.Paper"
-read -p "input number: " minecraftServer
-
-# Install Vanilla
-if [ $minecraftServer -eq 1 ]; then
-    echo "[INFO]installing vanilla..."
-    cd mc
-    cd ..
-
-# Install Spigot
-elif [ $minecraftServer -eq 2 ]; then
-    echo "[INFO]installing spigot..."
-    cd mc
-    wget https://cdn.getbukkit.org/spigot/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar
-    mv spigot-1.8.8-R0.1-SNAPSHOT-latest.jar server.jar
-    cd ..
-
-# Install Paper
-elif [ $minecraftServer -eq 3 ]; then
-    echo "[INFO]installing paper..."
-    cd mc
-    # wget https://papermc.io/api/v1/paper/1.15.2/latest/download
-    wget https://papermc.io/api/v2/projects/paper/versions/1.8.8/builds/445/downloads/paper-1.8.8-445.jar
-    mv paper-1.8.8-445.jar server.jar
-    cd ..
-fi
+# Install Minecraft server
+cd mc
+echo "[INFO]installing Minecraft server..."
+echo "[INFO]input server.jar link"
+read -p "input: " serverJarLink
+wget $serverJarLink
+cd ..
+echo "[INFO]install Minecraft server success!"
