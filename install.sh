@@ -33,8 +33,8 @@ elif [ $frpServer -eq 1 ]; then
 fi
 
 # Agree eula
-echo "[INFO]do you agree eula?(y/n)"
-echo "[INFO]eula link:"
+echo "[INFO]do you agree minecraft eula?(y/n)"
+echo "[INFO]eula link: https://account.mojang.com/documents/minecraft_eula"
 read -p "input: " agreeMinecraftServerEula
 if [ $agreeMinecraftServerEula = "y" ]; then
     echo "eula=true" >> mc/eula.txt
